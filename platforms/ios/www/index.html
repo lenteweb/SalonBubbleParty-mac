@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+     <title>Salon Bubble Party</title>
+<link rel="stylesheet" href="css/bubble.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=true"
+    ></script>
+     <script>
+	/*
+ * Google Maps documentation: http://code.google.com/apis/maps/documentation/javascript/basics.html
+ * Geolocation documentation: http://dev.w3.org/geo/api/spec-source.html
+ */
+$( document ).on( "pageinit", "#map-page", function() {
+    var defaultLatLng = new google.maps.LatLng(22.310897, -97.8761086);  // Default to Hollywood, CA when no geolocation support
+    if ( navigator.geolocation ) {
+        function success(pos) {
+            // Location found, show map with these coordinates
+            drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+        }
+        function fail(error) {
+            drawMap(defaultLatLng);  // Failed to find location, show default map
+        }
+        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+        navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+    } else {
+        drawMap(defaultLatLng);  // No geolocation support, show default map
+    }
+    function drawMap(latlng) {
+        var myOptions = {
+            zoom: 16,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+        // Add an overlay to the map of current lat/lng
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title: "Greetings!"
+        });
+    }
+});
+</script>
+<script>
+
+imagenes = new Array();
+//Agrega tantas imágenes como necesites en el array
+imagenes[0] = "img/slide1.png";
+imagenes[1] = "img/slide2.png";
+imagenes[2] = "img/slide3.png";
+imagenes[3] = "img/slide4.png";
+imagenes[4] = "img/slide5.png";
+siguiente = 0;
+
+function CambiaImagen()
+{
+dimensiones = $("#box-imagen").width();
+$("#box-imagen img").css({left: -dimensiones+"px"}).attr("src", imagenes[siguiente]);
+$("#box-imagen img").animate({left: "+="+dimensiones});
+$("#box-imagen a").attr("href", imagenes[siguiente]);
+
+siguiente = siguiente+1;
+if (siguiente >= imagenes.length)
+{
+siguiente = 0;
+}
+//Aquí puedes colocar el tiempo para cada transición de imagen
+transicion = 4000;
+setTimeout("CambiaImagen()", transicion);
+}
+
+$(function(){
+CambiaImagen();
+});
+
+</script>
+<style>
+
+#box
+{
+width: 100%;
+background: black;
+padding: 0px;
+border-radius: 4px;
+}
+
+#box-imagen{
+width: 100%;
+background: black;
+overflow: hidden;
+}
+
+#box-imagen img
+{
+position: relative;
+width: 100%;
+
+}
+</style>
+</head>
+<body>
+	<div data-role="page" id="page1" data-theme="d">
+<div class="ui-header ui-bar-a" data-swatch="a" data-theme="d" data-form="ui-bar-d" data-role="header" role="banner" data-position="fixed">
+		<a role="button" data-role="button" class="ui-btn-left ui-btn-corner-all ui-btn  ui-icon-home ui-btn-icon-notext ui-shadow"  title=" INICIO " data-form="ui-icon" href="#page1"> INICIO </a>
+		<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">Bienvenidos</h1>
+		<a role="button" data-role="button" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-phone ui-btn-icon-notext ui-shadow" title=" Llámanos " data-form="ui-icon" href="tel:8332871198"> Llámanos </a>
+        <div data-role="navbar" data-position="fixed">
+    <ul>
+      <li><a href="#page1" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-active">INICIO</a></li>
+      <li><a href="#page2" class="ui-btn ui-icon-navigation ui-btn-icon-left" data-transition="slide">Servicios</a></li>
+      <li><a href="#page3" class="ui-btn ui-icon-location ui-btn-icon-left" data-transition="slide">Contacto</a></li>
+    </ul>
+  </div>
+        </div>
+		<div data-role="content" data-theme="a">
+		<div id="box">
+<div id="box-imagen">
+<a href="img/slide1.png"><img src="slide1.png"></a>
+</div>
+</div>
+<br>
+	<div data-theme="d" data-form="ui-body-d" class="ui-body ui-body-b ui-corner-all"><p>BIENVENIDO AL EVENTO DE TUS SUEÑOS… ¡TU FIESTA BAJO EL MAR!</p>
+    <p>Salón de Fiestas en la zona norte de Tampico</div>
+		</div>
+    <div class="ui-body-b" align="center"><img src="img/ABANER_1.jpg" width="365" height="200" alt=""/></div>
+	</div>
+
+   <!-- Pagina de servicios -->
+
+   <div data-role="page" id="page2" data-theme="d">
+<div class="ui-header ui-bar-a" data-swatch="a" data-theme="d" data-form="ui-bar-d" data-role="header" role="banner" data-position="fixed">
+		<a role="button" data-role="button" class="ui-btn-left ui-btn-corner-all ui-btn  ui-icon-home ui-btn-icon-notext ui-shadow"  title=" INICIO " data-form="ui-icon" href="#page1"> INICIO </a>
+		<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">Servicios</h1>
+		<a role="button" data-role="button" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-phone ui-btn-icon-notext ui-shadow" title=" Llámanos " data-form="ui-icon" href="tel:8332871198"> Llámanos </a>
+        <div data-role="navbar" data-position="fixed">
+    <ul>
+      <li><a href="#page1" class="ui-btn ui-icon-home ui-btn-icon-left"data-transition="slide">INICIO</a></li>
+      <li><a href="#page2" class="ui-btn ui-icon-navigation ui-btn-icon-left ui-btn-active" >Servicios</a></li>
+      <li><a href="#page3" class="ui-btn ui-icon-location ui-btn-icon-left" data-transition="slide">Contacto</a></li>
+    </ul>
+  </div>
+        </div>
+		<div id="content2" data-role="content" data-theme="a">
+        <span style="font-family: verdana,geneva,sans-serif; color: #800080;"><strong><span style="font-size: 24pt;"><span style="color: #008000;">Nuestros Servicios:</span></span></strong></span>
+<p style="text-align: center;"><img class="alignleft wp-image-452 size-full" src="img/10553378_955981044428111_2743503397759296531_n.jpg" alt="Fiesta en el Salón" width="100%" height="" /></p>
+<ul>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Renta del Salon Solo o con Merienda.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Paquete todo Incluido.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Sonido Profesional con Video.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Pastel para 100 Personas.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Piñata de Personaje.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Mobiliario con Manteleria.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Desechables (Platos, Vasos, Cubiertos y Servilletas).</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Anfitriones.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Coordinacion del Evento.</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Botanas (2 charolas por mesa).</span></strong></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Refresco Rellenable todo el Evento.</span></strong></li>
+	<li><span style="color: #003366; font-family: verdana,geneva,sans-serif;"><strong><span style="font-size: 14pt;">Area de juegos.</span></strong></span></li>
+	<li><strong><span style="font-size: 14pt; font-family: verdana,geneva,sans-serif; color: #003366;">Wi-Fi.</span></strong></li>
+</ul>
+
+<span style="font-family: verdana,geneva,sans-serif; color: #800080;"><strong><span style="font-size: 24pt;"><span style="color: #008000;">Adicionales con Costo:</span></span></strong></span>
+<p style="text-align: center;"><img class="alignleft wp-image-479 size-full" src="img/area_de-juegos_bubbleparty.jpg" alt="area_de juegos_bubbleparty" width="100%" height="" /></p>
+<ul>
+<li>
+<span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Hora Extra de Salón: $500.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Mesa de café, pan, pay y galletitas. $800.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Thermo con agua de sabor. $300.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Show de Payasito con regalos. $2,000.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Fuente Chamoy, Chocolate ó queso. $1,200.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Mesa de Dulces ó Postres. $1,200.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Pintacaritas $300.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Caballetes en forma de animalitos.$800.00 </span></strong></span></li>
+</ul>
+<p style="text-align: center;"><img class="alignleft wp-image-480 size-full" src="img/areadejuegos_salon_bubbleparty1.jpg" alt="areadejuegos_salon_bubbleparty" width="100%" height="" /></p>
+<ul>
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Video salón. $ 700.00 c/misa costo adicional.</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Piñata extra. $300.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Pastel extra. $500.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Velita pirotécnica $40.00</span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •Accesorios luminosos $10.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Bolsitas de dulces $30.00 </span></strong></span></li>
+
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null">•Centros de mesa $650.00 (9 Pzas)</span></strong></span></li>
+<li><span style="font-family: verdana,geneva,sans-serif; color: #800080; font-size: 14pt;"><strong><span class="null"> •CD con fotos del evento. $400.00</span></strong></span></li>
+<li><span style="font-family: verdana,geneva,sans-serif; color: #008000; font-size: 24pt;"><strong><span class="null" style="font-size: 14pt;"><span style="color: #800080;">•</span></span><span class="null"><span style="font-size: 14pt; color: #800080;">Acceso a INTERNET Gratis.</span></span></strong></span></li>
+</ul>
+<p style="text-align: center;"><img class="aligncenter size-full wp-image-454" src="img/1506470_572899832841651_819022024978897985_n.jpg" alt="Salón" width="100%" height="" /></p>
+<br>
+	</div>
+    </div>
+
+    <!--- Pagina de Contacto --->
+    <div data-role="page" id="page3" data-theme="d">
+<div class="ui-header ui-bar-a" data-swatch="a" data-theme="d" data-form="ui-bar-d" data-role="header" role="banner" data-position="fixed">
+		<a role="button" data-role="button" class="ui-btn-left ui-btn-corner-all ui-btn  ui-icon-home ui-btn-icon-notext ui-shadow"  title=" INICIO " data-form="ui-icon" href="#page1"> INICIO </a>
+		<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">Contáctenos</h1>
+		<a role="button" data-role="button" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-phone ui-btn-icon-notext ui-shadow" title=" Llámanos " data-form="ui-icon" href="tel:8332871198"> Llámanos </a>
+        <div data-role="navbar" data-position="fixed">
+    <ul>
+      <li><a href="#page1" class="ui-btn ui-icon-home ui-btn-icon-left"data-transition="slide">INICIO</a></li>
+      <li><a href="#page2" class="ui-btn ui-icon-navigation ui-btn-icon-left" data-transition="slide">Servicios</a></li>
+      <li><a href="#page3" class="ui-btn ui-icon-location ui-btn-icon-left ui-btn-active">Contacto</a></li>
+    </ul>
+  </div>
+        </div>
+		<div data-role="content" data-theme="a">
+
+<h3>Si desea más información para reservar un Evento<br>Envíe mensaje o llámenos</h3>
+
+   <ul data-role="listview" data-inset="true" style="text-align:center">
+   <li><a style="text-align:center" href ="mailto:ventas@salonbubbleparty.com" data-role="button"> Envíar Email</a></li>
+   </ul>
+   <ul data-role="listview" data-inset="true">
+   <li><a style="text-align:center" href ="sms:8332871198" data-role="button"> Envíar Mensaje SMS</a></li>
+   </ul>
+   <ul data-role="listview" data-inset="true">
+   <li><a style="text-align:center" href ="tel:8331320668" data-role="button"> Llamar para Reservar</a></li>
+   </ul>
+   <ul data-role="listview" data-inset="true">
+   <li><a style="text-align:center" href="#map-page" data-role="button">Ubicación del Salón</a></li>
+   </ul>
+   <h2 align="center">Salón<br>Bubble Party</h2>
+<p>Calle Aquiles Serdán 702, Esquina con Josefa Ortiz de Domínguez<br>
+Col. Nuevo Progreso,<br>Tampico Tamaulipas</p>
+</div>
+    <div class="ui-body-b" align="center"><img src="img/ABANER_1.jpg" width="365" height="200" alt=""/></div>
+	</div>
+
+    <!-- pagina maps... -->
+    <div data-role="page" id="map-page" data-url="map-page" data-theme="d">
+    <div class="ui-header ui-bar-a" data-swatch="a" data-theme="d" data-form="ui-bar-a" data-role="header" role="banner" data-position="fixed">
+	<a role="button" data-role="button" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-back  ui-btn-icon-notext ui-shadow" title=" Regresar " data-form="ui-icon" href="#page3"> Regresar </a>
+    <h1 class="ui-title" tabindex="0" role="heading" aria-level="1">Ubicación</h1>
+        <a role="button" data-role="button" class="ui-btn-right ui-btn-corner-all ui-btn  ui-shadow" title=" Llámanos " data-form="ui-icon" href="https://goo.gl/maps/zksc82pT97q"> Como llego </a>
+        </div>
+    <div role="main" class="ui-content" id="map-canvas">
+        <!-- map loads here... -->
+    </div>
+</div>
+
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>
